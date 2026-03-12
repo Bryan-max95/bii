@@ -171,7 +171,7 @@ export async function GET(request: NextRequest) {
   
   // Verificación de email
   if (pathname.match(/\/api\/auth\/verify\/.+/)) {
-    const token = pathname.split('/').pop();
+    const token = decodeURIComponent(pathname.split('/').pop() || '');
     console.log('Verifying email with token:', token);
     
     try {
@@ -618,3 +618,4 @@ export async function DELETE(request: NextRequest) {
   }, { status: 404 });
 
 }
+
