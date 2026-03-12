@@ -325,7 +325,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Enviar email de verificación
-      const verificationUrl = `${process.env.APP_URL || 'http://localhost:3000'}/verify?token=${verificationToken}`;
+      const verificationUrl = `${process.env.APP_URL}/api/auth/verify/${verificationToken}`;
       
       try {
         await transporter.sendMail({
@@ -441,7 +441,7 @@ export async function POST(request: NextRequest) {
         [resetToken, email]
       );
 
-      const resetUrl = `${process.env.APP_URL || 'http://localhost:3000'}/reset-password?token=${resetToken}`;
+      const resetUrl = `${process.env.APP_URL || 'https://bii-delta.vercel.app'}/reset-password?token=${resetToken}`;
 
       try {
         await transporter.sendMail({
@@ -616,4 +616,5 @@ export async function DELETE(request: NextRequest) {
     success: false, 
     message: 'Ruta no encontrada' 
   }, { status: 404 });
+
 }
