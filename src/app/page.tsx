@@ -2,25 +2,11 @@
 
 import React from "react";
 import dynamic from "next/dynamic";
+import { Routes, Route, Navigate } from "react-router-dom";
 
-// React Router cargado solo en cliente
+// Router solo en cliente
 const HashRouter = dynamic(
   () => import("react-router-dom").then((mod) => mod.HashRouter),
-  { ssr: false }
-);
-
-const Routes = dynamic(
-  () => import("react-router-dom").then((mod) => mod.Routes),
-  { ssr: false }
-);
-
-const Route = dynamic(
-  () => import("react-router-dom").then((mod) => mod.Route),
-  { ssr: false }
-);
-
-const Navigate = dynamic(
-  () => import("react-router-dom").then((mod) => mod.Navigate),
   { ssr: false }
 );
 
@@ -69,7 +55,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
   return <>{children}</>;
 };
 
-const App: React.FC = () => {
+export default function App() {
   return (
     <HashRouter>
       <Routes>
@@ -81,11 +67,12 @@ const App: React.FC = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
-        {/* Dashboard protegido */}
+        {/* Dashboard */}
         <Route
           path="/*"
           element={
             <ProtectedRoute>
+
               <div className="flex h-screen bg-[#F7F5F2] text-[#1A1A1A] overflow-hidden">
 
                 <Sidebar />
@@ -95,95 +82,43 @@ const App: React.FC = () => {
                   <Topbar />
 
                   <main className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+
                     <Routes>
 
                       <Route path="/overview" element={<Overview />} />
-
                       <Route path="/devices/pc" element={<PCDevices />} />
-
                       <Route path="/monitoring" element={<Monitoring />} />
-
                       <Route path="/activity-graph" element={<ActivityGraph />} />
-
                       <Route path="/scripts-global" element={<GlobalScripts />} />
-
                       <Route path="/vulnerabilities" element={<Vulnerabilities />} />
-
                       <Route path="/cameras" element={<Cameras />} />
-
                       <Route path="/dashboard/logs" element={<Logs />} />
-
                       <Route path="/dashboard/incidents" element={<Incidents />} />
-
                       <Route path="/dashboard/incidents/list" element={<IncidentList />} />
-
                       <Route path="/dashboard/incidents/categories" element={<Categories />} />
-
                       <Route path="/dashboard/incidents/smart-views" element={<SmartViews />} />
-
                       <Route path="/dashboard/incidents/export" element={<ExportCenter />} />
-
                       <Route path="/dashboard/incidents/notifications" element={<Notifications />} />
-
                       <Route path="/dashboard/monitoring/summary" element={<ExecutiveSummary />} />
-
                       <Route path="/dashboard/network" element={<NetworkControl />} />
-
                       <Route path="/wifi" element={<WiFiAudit />} />
-
                       <Route path="/servers" element={<ServersControl />} />
-
                       <Route path="/aws" element={<AWSCloudControl />} />
-
                       <Route path="/cloud-multi" element={<CloudMultiControl />} />
-
                       <Route path="/security" element={<SecurityControl />} />
-
                       <Route path="/settings" element={<Settings />} />
-
                       <Route path="/profile" element={<Profile />} />
 
                       <Route path="/" element={<Navigate to="/overview" />} />
 
-                      {/* 404 */}
-                      <Route
-                        path="*"
-                        element={
-                          <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
-
-                            <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center">
-                              <span className="text-2xl font-bold text-gray-300">
-                                404
-                              </span>
-                            </div>
-
-                            <div>
-                              <h2 className="text-xl font-bold">
-                                Módulo en Desarrollo
-                              </h2>
-
-                              <p className="text-gray-500">
-                                Esta sección del panel BWP está siendo integrada actualmente.
-                              </p>
-                            </div>
-
-                            <button
-                              onClick={() => (window.location.hash = "#/overview")}
-                              className="text-[#7A0C0C] font-bold text-sm uppercase tracking-widest hover:underline"
-                            >
-                              Regresar al Resumen
-                            </button>
-
-                          </div>
-                        }
-                      />
-
                     </Routes>
+
                   </main>
 
                 </div>
 
               </div>
+
             </ProtectedRoute>
           }
         />
@@ -191,6 +126,4 @@ const App: React.FC = () => {
       </Routes>
     </HashRouter>
   );
-};
-
-export default App;
+}
